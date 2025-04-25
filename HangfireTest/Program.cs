@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services
-    .AddHangfire(config => config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")))
+    .ConfigureHangfire(builder.Configuration.GetConnectionString("DefaultConnection")!)
     .AddHangfireServer()
     .InstantiateJobs();
 
@@ -25,7 +25,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.ScheduleAllJobs();
-app.UseHangfireDashboard("/jobs"); // add basic auth later
+app.ConfigureHangfireDashboard();
 
 app.MapControllers();
 app.Run();
